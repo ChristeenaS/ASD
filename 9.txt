@@ -1,0 +1,118 @@
+EXPERIMENT 9
+
+1
+DECLARE
+	a NUMBER (5); 
+	b NUMBER (5); 
+	c NUMBER (7); 
+BEGIN
+    a:=5;
+    b:=20;
+    c:=a+b;
+	dbms_output.Put_line('Sum is '||c); 
+END; 
+
+Statement processed.
+Sum is 25
+
+2
+DECLARE
+ 	a NUMBER := 5; 
+	b NUMBER := 20; 
+	c NUMBER := 12; 
+BEGIN
+	IF a > b AND a > c THEN
+	dbms_output.Put_line('Greatest number is '||a); 
+	ELSIF b > a AND b > c THEN
+	dbms_output.Put_line('Greatest number is '||b); 
+	ELSE
+	dbms_output.Put_line('Greatest number is '||c); 
+	END IF; 
+END; 
+
+Statement processed.
+Greatest number is 20
+
+
+3
+DECLARE
+    n NUMBER;
+    fac NUMBER:=1;
+    num NUMBER:=4;
+BEGIN
+    n:=num;
+    while n>0 loop
+        fac:=n*fac;
+        n:=n-1;
+    end loop;
+    dbms_output.put_line('Factorial is ' || fac);
+END;
+
+Statement processed.
+Factorial is 24
+
+
+4
+DECLARE
+    first NUMBER:=0;
+    second NUMBER:=1;
+    n NUMBER:=5;
+    i NUMBER;
+    temp NUMBER;
+BEGIN
+    dbms_output.put_line(first); 
+    dbms_output.put_line(second); 
+    for i in 2..n 
+    loop 
+        temp:=first+second; 
+    first := second; 
+    second := temp; 
+    dbms_output.put_line(temp); 
+    END loop;
+END;
+
+
+Statement processed.
+0
+1
+1
+2
+3
+5
+
+5
+DECLARE
+    num NUMBER:=10245;
+    rev NUMBER;
+BEGIN
+    rev:=0;
+    WHILE num>0 LOOP
+    rev:=(rev*10) + mod(num,10); 
+    num:=floor(num/10); 
+    END LOOP; 
+    DBMS_OUTPUT.PUT_LINE('Reverse of the number is: ' || rev); 
+END;  
+
+Statement processed.
+Reverse of the number is: 54201
+
+
+6
+DECLARE
+	a VARCHAR2(10) := 'adfda'; 
+	b VARCHAR2(20); 
+	c VARCHAR2(10); 
+BEGIN
+	FOR i IN REVERSE 1..Length(a) LOOP 
+		b := Substr(a, i, 1); 
+		c := c ||''||b; 
+	END LOOP; 
+	IF c = a THEN
+	dbms_output.Put_line(c ||''||' is palindrome'); 
+	ELSE
+	dbms_output.Put_line(c ||''||' is not palindrome'); 
+	END IF; 
+END;
+
+Statement processed.
+adfda is palindromess

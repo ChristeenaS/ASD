@@ -1,0 +1,259 @@
+mysql> create table product(pid int,pname varchar(20),unitprice int,manufacturer varchar(10),category varchar(20),country varchar(10));
+Query OK, 0 rows affected (1.19 sec)
+
+mysql> describe product;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| pid          | int         | YES  |     | NULL    |       |
+| pname        | varchar(20) | YES  |     | NULL    |       |
+| unitprice    | int         | YES  |     | NULL    |       |
+| manufacturer | varchar(10) | YES  |     | NULL    |       |
+| category     | varchar(20) | YES  |     | NULL    |       |
+| country      | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+6 rows in set (0.19 sec)
+
+mysql> insert into product values (100,'Mixer grinder',3000,'Philips','Home appliances','India'),
+    -> (200,'Redmi 8',8000,'Xiaomi','Mobilephone','India'),
+    -> (300,'Lenovo',33000,'Lenovo','Laptop','India'),
+    -> (400,'Poco f1',20000,'Xiaomi','Mobilephone','India');
+Query OK, 4 rows affected (0.32 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select *from product;
++------+---------------+-----------+--------------+-----------------+---------+
+| pid  | pname         | unitprice | manufacturer | category        | country |
++------+---------------+-----------+--------------+-----------------+---------+
+|  100 | Mixer grinder |      3000 | Philips      | Home appliances | India   |
+|  200 | Redmi 8       |      8000 | Xiaomi       | Mobilephone     | India   |
+|  300 | Lenovo        |     33000 | Lenovo       | Laptop          | India   |
+|  400 | Poco f1       |     20000 | Xiaomi       | Mobilephone     | India   |
++------+---------------+-----------+--------------+-----------------+---------+
+4 rows in set (0.06 sec)
+
+mysql> create view v1 as select pid,pname,category from product;
+Query OK, 0 rows affected (0.30 sec)
+
+
+mysql> create view v as select pname,country from product where category='Home appliances';
+Query OK, 0 rows affected (0.80 sec)
+
+mysql> select*from v;
++---------------+---------+
+| pname         | country |
++---------------+---------+
+| Mixer grinder | India   |
++---------------+---------+
+1 row in set (0.01 sec)
+
+mysql> insert into v1 values(501,'XY505','Mobilephone');
+Query OK, 1 row affected (0.70 sec)
+
+mysql> select*from v1;
++------+---------------+-----------------+
+| pid  | pname         | category        |
++------+---------------+-----------------+
+|  100 | Mixer grinder | Home appliances |
+|  200 | Redmi 8       | Mobilephone     |
+|  300 | Lenovo        | Laptop          |
+|  400 | Poco f1       | Mobilephone     |
+|  501 | XY505         | Mobilephone     |
++------+---------------+-----------------+
+5 rows in set (0.13 sec)
+
+mysql> update v1 set pname='Xseries' where pid=200;
+Query OK, 1 row affected (0.20 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from v1;
++------+---------------+-----------------+
+| pid  | pname         | category        |
++------+---------------+-----------------+
+|  100 | Mixer grinder | Home appliances |
+|  200 | Xseries       | Mobilephone     |
+|  300 | Lenovo        | Laptop          |
+|  400 | Poco f1       | Mobilephone     |
+|  501 | XY505         | Mobilephone     |
++------+---------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table product add primary key(pid);
+Query OK, 0 rows affected (3.84 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe product;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| pid          | int         | NO   | PRI | NULL    |       |
+| pname        | varchar(20) | YES  |     | NULL    |       |
+| unitprice    | int         | YES  |     | NULL    |       |
+| manufacturer | varchar(10) | YES  |     | NULL    |       |
+| category     | varchar(20) | YES  |     | NULL    |       |
+| country      | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+6 rows in set (0.33 sec)
+
+
+mysql> create view v2 as select pname,unitprice,category from product;
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> insert into v2 values('DJ203',5500,'Home appliances');
+ERROR 1423 (HY000): Field of view 'mydatabase.v2' underlying table doesn't have a default value
+
+
+mysql> delete from v2 where pname='Lenovo';
+Query OK, 1 row affected (0.30 sec)
+
+mysql> select*from v2;
++---------------+-----------+-----------------+
+| pname         | unitprice | category        |
++---------------+-----------+-----------------+
+| Mixer grinder |      3000 | Home appliances |
+| Xseries       |      8000 | Mobilephone     |
+| Poco f1       |     20000 | Mobilephone     |
+| XY505         |      NULL | Mobilephone     |
++---------------+-----------+-----------------+
+4 rows in set (0.00 sec)
+
+mysql> create table emp(empid int,ename varchar(10),salary int,departid int);
+Query OK, 0 rows affected (1.34 sec)
+
+mysql> insert into emp values(1000,'Nitya',22000,10),(1002,'Annet',25000,20),(1003,'Swathy',30000,30),(1004,'Sruthy',27000,40);
+Query OK, 4 rows affected (0.31 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select*from emp;
++-------+--------+--------+----------+
+| empid | ename  | salary | departid |
++-------+--------+--------+----------+
+|  1000 | Nitya  |  22000 |       10 |
+|  1002 | Annet  |  25000 |       20 |
+|  1003 | Swathy |  30000 |       30 |
+|  1004 | Sruthy |  27000 |       40 |
++-------+--------+--------+----------+
+
+
+mysql> insert into dept values(10,'HR'),(20,'Finance'),(30,'Banking'),(40,'IT');
+Query OK, 4 rows affected (0.30 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> insert into dept values(10,'HR'),(20,'Finance'),(30,'Banking'),(40,'IT');
+Query OK, 4 rows affected (0.30 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select*from dept;
++----------+------------+
+| departid | department |
++----------+------------+
+|       10 | HR         |
+|       20 | Finance    |
+|       30 | Banking    |
+|       40 | IT         |
++----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> create view v3 as select E.empid as eid,E.ename,E.salary,D.departid as deptid,D.department from emp as E inner join dept as D where E.departid=D.departid;
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> select*from v3;
++------+--------+--------+--------+------------+
+| eid  | ename  | salary | deptid | department |
++------+--------+--------+--------+------------+
+| 1000 | Nitya  |  22000 |     10 | HR         |
+| 1002 | Annet  |  25000 |     20 | Finance    |
+| 1003 | Swathy |  30000 |     30 | Banking    |
+| 1004 | Sruthy |  27000 |     40 | IT         |
++------+--------+--------+--------+------------+
+4 rows in set (0.39 sec)
+
+
+mysql> update v3 set salary=salary+1000 where deptid=10;
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from v3;
++------+--------+--------+--------+------------+
+| eid  | ename  | salary | deptid | department |
++------+--------+--------+--------+------------+
+| 1000 | Nitya  |  23000 |     10 | HR         |
+| 1002 | Annet  |  25000 |     20 | Finance    |
+| 1003 | Swathy |  30000 |     30 | Banking    |
+| 1004 | Sruthy |  27000 |     40 | IT         |
++------+--------+--------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> alter table dept add primary key(departid);
+Query OK, 0 rows affected (2.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe dept;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| departid   | int         | NO   | PRI | NULL    |       |
+| department | varchar(10) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.17 sec)
+
+mysql> alter table emp add primary key(empid), add foreign key(departid) references dept(departid);
+Query OK, 4 rows affected (3.08 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> describe emp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empid    | int         | NO   | PRI | NULL    |       |
+| ename    | varchar(10) | YES  |     | NULL    |       |
+| salary   | int         | YES  |     | NULL    |       |
+| departid | int         | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> insert into v3 (eid,ename,salary) values(1005,'Dhanya',24000);
+Query OK, 1 row affected (0.41 sec)
+
+mysql> insert into v3 (deptid,department) values(50,'Marketing');
+Query OK, 1 row affected (0.21 sec)
+
+mysql> select*from v3;
++------+--------+--------+--------+------------+
+| eid  | ename  | salary | deptid | department |
++------+--------+--------+--------+------------+
+| 1000 | Nitya  |  23000 |     10 | HR         |
+| 1002 | Annet  |  25000 |     20 | Finance    |
+| 1003 | Swathy |  30000 |     30 | Banking    |
+| 1004 | Sruthy |  27000 |     40 | IT         |
++------+--------+--------+--------+------------+
+4 rows in set (0.13 sec)
+
+mysql> select*from emp;
++-------+--------+--------+----------+
+| empid | ename  | salary | departid |
++-------+--------+--------+----------+
+|  1000 | Nitya  |  23000 |       10 |
+|  1002 | Annet  |  25000 |       20 |
+|  1003 | Swathy |  30000 |       30 |
+|  1004 | Sruthy |  27000 |       40 |
+|  1005 | Dhanya |  24000 |     NULL |
++-------+--------+--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select*from dept;
++----------+------------+
+| departid | department |
++----------+------------+
+|       10 | HR         |
+|       20 | Finance    |
+|       30 | Banking    |
+|       40 | IT         |
+|       50 | Marketing  |
++----------+------------+
+5 rows in set (0.00 sec)
+
+
+
+
